@@ -1,5 +1,4 @@
 import {IUser} from '../interfaces/IUser';
-import SpotifyWebApi from 'spotify-web-api-js';
 import {IPlaylist} from '../interfaces/IPlaylist';
 import {IArtist} from '../interfaces/IArtist';
 import {IMusic} from '../interfaces/IMusic';
@@ -13,11 +12,15 @@ export function SpotifyUserToUser(user: SpotifyApi.CurrentUsersProfileResponse):
     imageUrl: user.images?.pop()?.url || ''
   };
 }
-export function SpotifyPlaylistToPlaylist(playlist: SpotifyApi.PlaylistObjectSimplified): IPlaylist {
+export function SpotifyPlaylistToPlaylist(playlist: SpotifyApi.PlaylistObjectSimplified): IPlaylist |null{
+  if (!playlist) {
+    console.error('Invalid playlist object:', playlist);
+    return null; // Return a default object or handle as necessary
+  }
   return {
-    id: playlist.id,
+    id: playlist.id || '',
     name: playlist.name,
-    imageUrl: playlist.images.pop()!.url
+    imageUrl: (playlist.images && playlist.images.length > 0) ? playlist.images.pop()!.url : 'default-image.png', // Fallback to a default image URL if empty
   };
 }
 
@@ -28,7 +31,7 @@ export function SpotifySinglePlaylistToPlaylist(playlist: SpotifyApi.SinglePlayl
   return {
     id: playlist.id,
     name: playlist.name,
-    imageUrl: playlist.images.shift()!.url,
+    imageUrl: playlist.images.shift()?.url || '',
     musics: []
   };
 }
@@ -41,7 +44,7 @@ export function SpotifyArtistToArtist(spotifyArtist: SpotifyApi.ArtistObjectFull
   };
 }
 
-export function SpotifyTrackToSong(spotifyTrack: SpotifyApi.TrackObjectFull): IMusic {
+export function SpotifyTSongToSong(spotifyTrack: SpotifyApi.TrackObjectFull): IMusic {
   if (!spotifyTrack)
     return newMusic();
 

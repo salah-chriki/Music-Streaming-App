@@ -1,0 +1,16 @@
+@import "variables";
+
+:host {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  max-height: 100vh;
+  max-width: 350px;
+  width: 350px;
+  padding: 40px 20px 20px 20px;
+  background-color: $background-color2;
+
+  .player {
+    flex-grow: 1;
+  }
+}

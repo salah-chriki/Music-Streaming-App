@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
 
 @Component({
   selector: 'app-menu-button',
@@ -7,5 +7,22 @@ import { Component } from '@angular/core';
   styleUrl: './menu-button.component.scss'
 })
 export class MenuButtonComponent {
+  @Input()
+  description = '';
+
+  @Input()
+  selected = false;
+
+  @Output()
+  click = new EventEmitter<void>();
+
+  constructor() { }
+
+  ngOnInit(): void {
+  }
+
+  onClick() {
+    this.click.emit();
+  }
 
 }

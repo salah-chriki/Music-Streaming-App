@@ -1,1 +1,11 @@
-<p>user-footer works!</p>
+<div class="flex">
+  <img [src]="user?.imageUrl" alt="" srcset="">
+  <span>
+    {{ user?.name }}
+  </span>
+  <fa-icon
+    class="icon"
+    (click)="logout()"
+    [icon]="signOutIcon">
+  </fa-icon>
+</div>

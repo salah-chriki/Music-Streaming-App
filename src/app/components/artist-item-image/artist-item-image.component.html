@@ -1,1 +1,6 @@
-<p>artist-item-image works!</p>
+<div class="flex container" (click)="onClick()">
+  <img [src]="imageSrc" alt="" >
+  <span>
+    <ng-content></ng-content>
+  </span>
+</div>
