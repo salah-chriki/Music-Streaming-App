@@ -1,1 +1,15 @@
-<p>recent-searches works!</p>
+<input
+  type="text"
+  [(ngModel)]="searchField"
+  placeholder="Artists, Musics, Playlists"
+  (keyup.Enter)="search()"
+>
+<div class="suggestions flex">
+  <span
+    *ngFor="let recentSearch of recentSearches"
+    (click)="setSearch(recentSearch)"
+  >
+    {{ recentSearch }}
+  </span>
+</div>
+
