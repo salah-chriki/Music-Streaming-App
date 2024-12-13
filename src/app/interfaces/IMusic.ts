@@ -11,4 +11,12 @@ export interface IMusic {
     imageUrl: string;
   };
   duration: string;
+  displayPlay:string;
+}
+
+
+export interface SongContent extends IMusic {
+  file?: string;
+  cover?: string;
+  fileContentType?: string;
 }

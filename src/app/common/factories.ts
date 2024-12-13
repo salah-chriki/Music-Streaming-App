@@ -1,6 +1,7 @@
 import {IArtist} from '../interfaces/IArtist';
 import {IMusic} from '../interfaces/IMusic';
 import {IPlaylist} from '../interfaces/IPlaylist';
+import {IResponseYT} from '../interfaces/IResponseYT';
 
 
 export function newArtist(): IArtist {
@@ -14,6 +15,7 @@ export function newArtist(): IArtist {
 
 export function newMusic(): IMusic {
   return {
+    displayPlay: '',
     id: '',
     album: {
       id: '',
@@ -32,5 +34,10 @@ export function newPlaylist(): IPlaylist {
     imageUrl: '',
     name: '',
     musics: []
+  };
+}
+export function newResponseYT(): IResponseYT {
+  return {
+    items: [],
   };
 }

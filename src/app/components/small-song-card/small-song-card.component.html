@@ -1,0 +1,10 @@
+<div (click)="play()" class="d-flex w-100">
+  <img class="rounded-2" width="55px" height="55px"
+       [src]="song().album.imageUrl"/>
+  <div class="d-flex flex-column justify-content-center ms-2">
+    <div class="mb-1 title">{{ song().title! }}</div>
+    <div *ngFor="let artist of song().artists">
+      <div class="author">{{ artist.name }}</div>
+    </div>
+  </div>
+</div>

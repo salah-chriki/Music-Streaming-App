@@ -1,51 +1,67 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, effect, inject, OnDestroy, OnInit} from '@angular/core';
 import {FaIconComponent} from '@fortawesome/angular-fontawesome';
-import {IMusic} from '../../interfaces/IMusic';
-import {Subscription} from 'rxjs';
-import {newMusic} from '../../common/factories';
-import {faStepBackward, faStepForward} from '@fortawesome/free-solid-svg-icons';
-import {PlayerService} from '../../services/player.service';
+
+import {FormsModule} from '@angular/forms';
+import {YoutubeService} from '../../services/youtube.service';
 
 @Component({
   selector: 'app-player-card',
   imports: [
-    FaIconComponent
+    FormsModule,
   ],
   templateUrl: './player-card.component.html',
   styleUrl: './player-card.component.scss'
 })
-export class PlayerCardComponent implements OnInit, OnDestroy{
-  music: IMusic = newMusic();
-  subs: Subscription[] = [];
+export class PlayerCardComponent {
+  videoUrl: string = '';
+  currentTime: number = 0;
+  duration: number = 0;
+  private interval: any;
 
-// Icons
-  previousIcon = faStepBackward;
-  nextIcon = faStepForward;
+  constructor(private youtubeService: YoutubeService) {}
 
-  constructor(private playerService: PlayerService) { }
+  play(): void {
+    if (!this.videoUrl) {
+      alert('Please enter a YouTube URL.');
+      return;
+    }
 
-  ngOnInit(): void {
-    this.getCurrentlyPlayingMusic();
+    const audioStreamUrl = `http://localhost:3000/stream?url=${encodeURIComponent(
+      this.videoUrl
+    )}`;
+    this.youtubeService.playStream(audioStreamUrl);
+
+    // Update progress bar
+    this.interval = setInterval(() => {
+      this.currentTime = this.youtubeService.getCurrentTime();
+      this.duration = this.youtubeService.getDuration();
+    }, 500);
   }
 
-  ngOnDestroy(): void {
-    this.subs.forEach(sub => sub.unsubscribe());
+  pause(): void {
+    this.youtubeService.pause();
   }
 
-  getCurrentlyPlayingMusic() {
-    const sub = this.playerService.currentMusic.subscribe(music => {
-      this.music = music;
-    });
-
-    this.subs.push(sub);
+  resume(): void {
+    this.youtubeService.resume();
   }
 
-  previousMusic() {
-    this.playerService.previousMusic();
+  stop(): void {
+    this.youtubeService.stop();
+    clearInterval(this.interval);
+    this.currentTime = 0;
+    this.duration = 0;
   }
 
-  nextMusic() {
-    this.playerService.nextMusic();
+  onSeek(event: Event): void {
+    const target = event.target as HTMLInputElement;
+    this.youtubeService.seek(Number(target.value));
+  }
+
+  formatTime(seconds: number): string {
+    const mins = Math.floor(seconds / 60);
+    const secs = Math.floor(seconds % 60);
+    return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
   }
 
 }

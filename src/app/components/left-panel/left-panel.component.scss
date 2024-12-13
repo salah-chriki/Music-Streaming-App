@@ -8,6 +8,9 @@ $h-footer-user: 70px;
 $h-to-ignore: calc($h-spotify-logo + $h-menu-options + $h-footer-user);
 
 :host {
+  position: fixed;
+  top: 0;
+  left: 0;
   max-width: 300px;
   min-height: 100vh;
   overflow-y: hidden;

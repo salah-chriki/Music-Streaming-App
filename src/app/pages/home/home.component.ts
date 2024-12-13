@@ -61,7 +61,7 @@ export class HomeComponent implements OnInit{
   }
 
   async playMusic(music: IMusic){
-    await this.spotifyService.playMusic(music.id);
+    await this.spotifyService.playMusic(music);
     this.playerService.setCurrentMusic(music);
   }
 

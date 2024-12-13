@@ -12,6 +12,8 @@ import {IArtist} from '../interfaces/IArtist';
 import {IPlaylist} from '../interfaces/IPlaylist';
 import {IMusic} from '../interfaces/IMusic';
 import {Router} from '@angular/router';
+import {YoutubeService} from './youtube.service';
+import {Subscription} from 'rxjs';
 
 
 @Injectable({
@@ -20,7 +22,8 @@ import {Router} from '@angular/router';
 export class SpotifyService {
    spotifyApi:Spotify.SpotifyWebApiJs;
    user?:IUser;
-  constructor(private router:Router) {
+   songURL?:string;
+  constructor(private router:Router,private ytService:YoutubeService) {
     this.spotifyApi=new Spotify();
   }
 
@@ -105,13 +108,19 @@ export class SpotifyService {
     return tracks.items.map(x => SpotifyTSongToSong(x.track));
   }
 
-  async playMusic(trackId: string) {
-    await this.spotifyApi.queue(trackId);
+  async playMusic(song:IMusic) {
+    this.ytService.getSongURL(song).subscribe(res=>
+    this.songURL=res);
+    console.log(this.songURL);
+    await this.spotifyApi.queue(song.id);
     await this.spotifyApi.skipToNext();
+
   }
 
   async getCurrentMusic(): Promise<IMusic> {
+
     const spotifyTrack = await this.spotifyApi.getMyCurrentPlayingTrack();
+    console.log("in getCurrentMusic : "+spotifyTrack);
     return SpotifyTSongToSong(spotifyTrack.item!);
   }
 

@@ -18,13 +18,13 @@
     <tbody>
     <tr *ngFor="let music of musics"
         (click)="playSong(music)"
-        [class.playing]="song.id === currentSong.id">
+        [class.playing]="music.id === currentSong.id">
       <td>
         <fa-icon class="play" [icon]="playIcon"></fa-icon>
       </td>
       <td>{{ music.title }}</td>
       <td>{{ getArtists(music) }}</td>
-      <td class="right-align">{{ music.time }}</td>
+      <td class="right-align">{{ music.duration }}</td>
       <td>{{ music.album.name }}</td>
     </tr>
     </tbody>

@@ -1,19 +1,16 @@
-<div class="container card p-10">
-  <div class="image" [style.background-image]="'url(' + music.album.imageUrl + ')'" ></div>
-  <div class="controls">
-    <span> {{music.title }} </span>
-    <div class="buttons">
-      <fa-icon
-        [icon]="previousIcon"
-        (click)="previousMusic()"
-      >
-      </fa-icon>
+<div class="audio-player">
+  <button (click)="play()">Play</button>
+  <button (click)="pause()">Pause</button>
+  <button (click)="resume()">Resume</button>
+  <button (click)="stop()">Stop</button>
 
-      <fa-icon
-        [icon]="nextIcon"
-        (click)="nextMusic()"
-      >
-      </fa-icon>
-    </div>
+  <div class="progress-bar">
+    <input
+      type="range"
+      [value]="currentTime"
+      [max]="duration"
+      (input)="onSeek($event)"
+    />
+    <span>{{ formatTime(currentTime) }} / {{ formatTime(duration) }}</span>
   </div>
 </div>

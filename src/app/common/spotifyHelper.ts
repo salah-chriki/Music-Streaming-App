@@ -54,6 +54,7 @@ export function SpotifyTSongToSong(spotifyTrack: SpotifyApi.TrackObjectFull): IM
   };
 
   return {
+    displayPlay: '',
     id: spotifyTrack.uri,
     title: spotifyTrack.name,
     album: {
@@ -65,6 +66,6 @@ export function SpotifyTSongToSong(spotifyTrack: SpotifyApi.TrackObjectFull): IM
       id: artist.id,
       name: artist.name
     })),
-    duration: msToMinutes(spotifyTrack.duration_ms),
+    duration: msToMinutes(spotifyTrack.duration_ms)
   };
 }

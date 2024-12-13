@@ -22,7 +22,7 @@ import {NgForOf} from '@angular/common';
 })
 export class LeftPanelComponent implements OnInit{
 
-  menuSelected = 'Home';
+  menuSelected = 'home';
   playlists: IPlaylist[] = [];
 
 // Icons
@@ -42,7 +42,7 @@ export class LeftPanelComponent implements OnInit{
 
   buttonClick(button: string) {
     this.menuSelected = button;
-    this.router.navigateByUrl('player/home');
+    this.router.navigateByUrl(`player/${button}`);
   }
 
   goToPlaylist(playlistId: string) {

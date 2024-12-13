@@ -8,12 +8,17 @@ import {Subscription} from 'rxjs';
 import {ActivatedRoute} from '@angular/router';
 import {SpotifyService} from '../../services/spotify.service';
 import {PlayerService} from '../../services/player.service';
+import {NgForOf} from '@angular/common';
+import {RightPanelComponent} from '../../components/right-panel/right-panel.component';
+import {YoutubeService} from '../../services/youtube.service';
 
 @Component({
   selector: 'app-music-list',
   imports: [
     FaIconComponent,
-    BannerComponent
+    BannerComponent,
+    NgForOf,
+    RightPanelComponent,
   ],
   templateUrl: './music-list.component.html',
   styleUrl: './music-list.component.scss'
@@ -22,7 +27,7 @@ export class MusicListComponent implements OnInit,OnDestroy{
   bannerImageUrl = '';
   bannerText = '';
 
-  songs: IMusic[] = [];
+  musics: IMusic[] = [];
   currentSong: IMusic = newMusic();
   playIcon = faPlay;
 
@@ -33,12 +38,12 @@ export class MusicListComponent implements OnInit,OnDestroy{
   constructor(
     private activatedRoute: ActivatedRoute,
     private spotifyService: SpotifyService,
-    private playerService: PlayerService
+    private playerService: PlayerService,
+    private youtubeService:YoutubeService
   ) { }
 
   ngOnInit(): void {
     this.getSongs();
-    this.getCurrentSong();
   }
 
   ngOnDestroy(): void {
@@ -86,10 +91,10 @@ export class MusicListComponent implements OnInit,OnDestroy{
     // Implement artist data logic here
   }
 
-  setPageData(bannerText: string, bannerImage: string, songs: IMusic[]) {
+  setPageData(bannerText: string, bannerImage: string, musics: IMusic[]) {
     this.bannerImageUrl = bannerImage;
     this.bannerText = bannerText;
-    this.songs = songs;
+    this.musics = musics;
   }
 
   getArtists(song: IMusic) {
@@ -97,8 +102,9 @@ export class MusicListComponent implements OnInit,OnDestroy{
   }
 
   async playSong(song: IMusic) {
-    await this.spotifyService.playMusic(song.id);
-    this.playerService.setCurrentMusic(song);
+    await this.youtubeService.playSong(song);
+
+    // this.playerService.setCurrentMusic(song);
   }
 
 }
